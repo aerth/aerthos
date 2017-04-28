@@ -50,8 +50,10 @@ printf "\naerthos $0 $VERSION\n"
 echo ""
 helpmode(){
 	lines=()
-	lines+=("aerthos build script")
+	lines+=("aerthos iso build script")
 	lines+=("	$0 fetch")
+	lines+=("	$0 update")
+	lines+=("	$0 config")	
 	lines+=("	$0 build")
 	lines+=("	$0 install")
 	lines+=("	$0 all")
