@@ -133,7 +133,7 @@ case "$1" in
 		set -e
 		dothings "make -C ${VENDORDIR}linux localmodconfig"
 		dothings "make -C ${VENDORDIR}linux menuconfig"
-		dothings "make -C ${VENDORDIR}linux make -j2 V=1 deb-pkg"
+		dothings "make -C ${VENDORDIR}linux -j2 V=1 deb-pkg"
 		dothings "make -C ${VENDORDIR}busybox make defconfig"
 		dothings "make -C ${VENDORDIR}busybox make menuconfig"
 		dothings "make -C ${VENDORDIR}busybox make install"
