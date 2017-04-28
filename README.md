@@ -1,4 +1,4 @@
-#aerthos
+# aerthos
 
 components:
 
