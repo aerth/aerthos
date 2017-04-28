@@ -4,6 +4,7 @@ components:
 
   * linux kernel
   * busybox
+  * debian-based
 
 desktop-mode:
 
