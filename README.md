@@ -1,30 +1,30 @@
 # aerthos
 
-components:
+## components:
 
   * linux kernel
   * busybox
   * debian-based (deboostrap needed for iso creation)
 
-desktop-mode:
+## desktop-mode:
 
   * xinit
   * wmaker
 
-boot with:
+## boot with:
 
   * cd/usb/hd
   * grub2 for now
   * qemu line
-  # docker image otw
+  * docker image otw
 
 
-should work with:
+## should work with:
   * lvm
   * wifi
   * crappy laptop
 
-## to create ISO:
+# to create ISO:
 
   * git clone this repo
   * ```./make.bash all```
