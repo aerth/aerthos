@@ -118,6 +118,15 @@ gen_iso(){
 		
 }
 
+config_linux(){
+	echo ASSUMING KERNEL ALREADY CONFIGURED
+}
+
+build_linux_debpkg(){
+	cd ${VENDORDIR}linux
+	time make -j1 | tee ../build-linux.log
+}
+
 case "$1" in 
 	"fetch")
 		check_dependencies $needed
@@ -129,16 +138,30 @@ case "$1" in
 		check_dependencies $needed
 		do_update ${PACKAGES[@]}
 		;;
+	"config")
+		dothings "make -C ${VENDORDIR}linux localmodconfig"
+		dothings "make -C ${VENDORDIR}linux menuconfig"
+		dothings "make -C ${VENDORDIR}busybox defconfig"
+		dothings "make -C ${VENDORDIR}busybox menuconfig"
+		;;
+	"linux")
+		config_linux
+		build_linux_debpkg
+		;;
 	"build")
 		check_dependencies $needed
 		printf "building\n\n"
-		set -e
-		dothings "make -C ${VENDORDIR}linux localmodconfig"
-		dothings "make -C ${VENDORDIR}linux menuconfig"
+		if [ ! -f ${VENDORDIR}linux/.config ]; then
+			echo "no config found, try:"
+			echo "	$0 config"
+			exit 111
+		fi
+		set -e	
 		dothings "make -C ${VENDORDIR}linux -j2 V=1 deb-pkg"
-		dothings "make -C ${VENDORDIR}busybox make defconfig"
-		dothings "make -C ${VENDORDIR}busybox make menuconfig"
-		dothings "make -C ${VENDORDIR}busybox make install"
+		dothings "make -C ${VENDORDIR}busybox"
+		dothings "make -C ${VENDORDIR}gcc -j2 V=1"
+		dothings "make -C ${VENDORDIR}glibc -j2 V=1"
+		echo "DONE"
 		;;
 	"install")
 		printf "installing\n\n"
