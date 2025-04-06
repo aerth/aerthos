@@ -1,0 +1,8 @@
+#!/bin/bash
+echo Welcome to aerthOS | logger -s --journald
+echo "Welcome to aerthOS" | wall
+
+DISPLAY=:0 notify-send "Welcome to aerthOS" "This is the first boot, please wait a moment." -t 5000
+
+# firstboot is finished
+systemctl disable aerthos-firstboot

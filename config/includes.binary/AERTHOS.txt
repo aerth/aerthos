@@ -1,0 +1,7 @@
+Welcome to AERTHOS
+
+Reboot and hit 'f12' to enter the boot menu. Select the USB drive to boot AERTHOS LIVE without installing it.
+
+More info: https://github.com/aerth/aerthos/wiki/
+
+Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.

@@ -1,0 +1,9 @@
+spice-vdagent
+qemu-guest-agent
+
+
+# TODO remove xserver-xorg-video-all
+# xserver-xorg-video-all
+xserver-xorg-video-qxl
+xserver-xorg-video-fbdev
+xserver-xorg-video-vesa

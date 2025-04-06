@@ -1,0 +1,109 @@
+{
+    "telemetry.enableCrashReporter": false,
+    "telemetry.enableTelemetry": false,
+    "telemetry.telemetryLevel": "off",
+    "github.codespaces.defaultExtensions": [
+        "GitHub.codespaces",
+        "GitHub.vscode-pull-request-github",
+        "ms-vscode.makefile-tools",
+        "foxundermoon.shell-format"
+    ],
+    "github.codespaces.devcontainerChangedNotificationStyle": "modal",
+    "editor.experimental.treeSitterTelemetry": false,
+    "git.showActionButton": {
+        "commit": false,
+        "publish": false,
+        "sync": false
+    },
+    "terminal.integrated.suggest.quickSuggestions": {
+        "commands": "on",
+        "arguments": "on",
+        "unknown": "on"
+    },
+    "terminal.integrated.profiles.linux": {
+        "suggest": {
+            "path": "suggest",
+            "icon": "warning"
+        },
+        "bash": {
+            "path": "bash",
+            "icon": "terminal-bash",
+            "env": {
+                "MY_ENV_VAR": "my env var value"
+            },
+            // "args": [
+            //     "--rcfile",
+            //     "~/.bashrc_dev"
+            // ]
+        },
+        "tmux": {
+            "path": "tmux",
+            "icon": "terminal-tmux"
+        },
+    },
+    "go.testFlags": [
+        "-v"
+    ],
+    "dev.containers.logLevel": "trace",
+    "dev.containers.optimisticallyLaunchDocker": false,
+    "dev.containers.dockerSocketPath": "${HOME}/.docker/desktop/docker.sock",
+    "git.terminalAuthentication": false,
+    "makefile.configureOnOpen": false,
+    "shellformat.path": "/usr/bin/shfmt",
+    "[dockerfile]": {
+        "editor.defaultFormatter": "ms-azuretools.vscode-docker"
+    },
+    "files.associations": {
+        "*.chroot": "shellscript",
+        "*.list": "shellscript",
+        "postinst": "shellscript",
+        "changelog": "git-commit",
+        "*.service": "properties",
+        "control": "properties",
+        "*.normal": "properties"
+    },
+    "docker.contexts.showInStatusBar": true,
+    "diffEditor.ignoreTrimWhitespace": false,
+    "diffEditor.hideUnchangedRegions.enabled": true,
+    "[markdown]": {
+        "editor.unicodeHighlight.ambiguousCharacters": false,
+        "editor.unicodeHighlight.invisibleCharacters": false,
+        "diffEditor.ignoreTrimWhitespace": false,
+        "editor.wordWrap": "on",
+        "editor.quickSuggestions": {
+            "comments": "off",
+            "strings": "off",
+            "other": "off"
+        }
+    },
+    "editor.fontFamily": "'Spleen 32x64', 'Droid Sans Mono', 'monospace', monospace",
+    "editor.mouseWheelZoom": true,
+    "terminal.integrated.mouseWheelZoom": true,
+    "terminal.integrated.allowedLinkSchemes": [
+        "file",
+        "http",
+        "https",
+        "mailto",
+        "vscode",
+        "docker-desktop"
+    ],
+    "editor.minimap.size": "fit",
+    "github.copilot.chat.copilotDebugCommand.enabled": false,
+    "github.copilot.advanced": {
+        "authPermissions": "minimal"
+    },
+    "workbench.editor.enablePreview": false,
+    "workbench.startupEditor": "none",
+    "docker.languageserver.diagnostics.instructionWorkdirRelative": "error",
+    "scm.defaultViewMode": "tree",
+    "search.defaultViewMode": "tree",
+    "[makefile]": {
+        "editor.defaultFormatter": "ms-vscode.makefile-tools",
+        "editor.insertSpaces": false
+    },
+    "editor.autoClosingQuotes": "never",
+    "window.customTitleBarVisibility": "windowed",
+    "workbench.editor.editorActionsLocation": "titleBar",
+    "editor.renderWhitespace": "all",
+    "terminal.integrated.fontSize": 20,
+}

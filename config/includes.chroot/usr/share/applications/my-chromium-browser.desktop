@@ -1,0 +1,12 @@
+[Desktop Entry]
+Version=1.0
+Name=Open The Web
+Exec=/usr/local/bin/my-chromium-browser.bash %u
+Type=Application
+Terminal=false
+MimeType=x-scheme-handler/http;x-scheme-handler/https;x-scheme-handler/vscode;x-scheme-handler/vscodium;
+X-Desktop-File-Install-Version=0.28
+MimeType=application/pdf;application/rdf+xml;application/rss+xml;application/xhtml+xml;application/xhtml_xml;application/xml;image/gif;image/jpeg;image/png;image/webp;text/html;text/xml;x-scheme-handler/http;x-scheme-handler/https;
+GenericName=Web Browser
+Categories=Network;WebBrowser;
+Keywords=browser

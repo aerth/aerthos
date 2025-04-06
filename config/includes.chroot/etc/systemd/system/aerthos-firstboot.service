@@ -1,0 +1,10 @@
+[Unit]
+Description=AerthOS Firstboot
+After=firstrun.service
+
+[Service]
+Type=oneshot
+ExecStart=/var/lib/aerthos/bin/aerthos-firstboot
+
+[Install]
+WantedBy=multi-user.target

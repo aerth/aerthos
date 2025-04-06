@@ -1,0 +1,1 @@
+deb [signed-by=/usr/share/keyrings/aerthos-mozilla-archive-keyring.asc] https://packages.mozilla.org/apt mozilla main

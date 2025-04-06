@@ -1,0 +1,90 @@
+#!/bin/bash
+# headless-browser - screenshot a website
+# This script is part of the aerthOS project (https://aerth.github.io/aerthOS)
+
+set -eu
+
+DOPDF=1
+
+# all stdout is sent to stderr so we can get SCREENSHOT=foo.png
+runit() {
+    local url="$1"
+    local temp_dir=$(mktemp -d screenshot_${url#*://}_$(TZ=Etc/UTC date +%Y%m%d_%H%M_UTC)-XXXXXX)
+    filename="${temp_dir}/screenshot_${url#*://}_$(TZ=Etc/UTC date +%Y%m%d_%H%M_UTC).jpg"
+    outputflag="--screenshot=${filename}"
+    if [ ${DOPDF} -eq 1 ]; then
+        filename="${filename%.jpg}.pdf"
+        outputflag="--print-to-pdf=${filename}"
+    fi
+    echo SCREENSHOT=${filename}
+    if [ -f "${filename}" ]; then
+        return 0
+    fi
+    local width="${width-1280}"
+    local height="${height-720}"
+    local time_budget="${time_budget-10000}"
+    local userAgent="${userAgent:-Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.3}"
+    mkdir -p "${temp_dir}"
+    chmod 700 "${temp_dir}"
+    # Create a random profile directory
+    local profile_dir="AE${RANDOM}"
+
+    cmdline=(
+        "echo"
+        "/usr/lib/chromium/chromium"
+        "--headless"
+        "--disable-gpu"
+        "--disable-gpu-rasterization"
+        "--user-data-dir=${temp_dir}"
+        "--media-router=0"
+        "--no-default-browser-check"
+        "--profile-directory=${profile_dir}"
+        "${outputflag}"
+        "--no-pdf-header-footer"
+        "--window-size=${width},${height}"
+        "--virtual-time-budget=${time_budget}"
+        "--user-agent=${userAgent}"
+        ${url}
+    )
+    echo "Running command: ${cmdline[@]}" 1>&2
+    msg1=$(echo ${cmdline[@]} | sed 's/--user-data-dir="[^"]*"//g')
+    dialog --yesno "Taking screenshot of ${url} with width=${width}, height=${height}, time_budget=${time_budget}, userAgent=${userAgent}\n\nCMDLINE:\n\n${msg1}}" 0 0 1>/dev/tty || exit 2
+    [ -n "${url}" ] && [ -n "${filename}" ] && [ -n "${width}" ] && [ -n "${height}" ] && [ -n "${time_budget}" ] && [ -n "${userAgent}" ] || {
+        echo "Usage: $0 <url> <filename> <width> <height> <time_budget> <userAgent>" 1>&2
+        return 1
+    }
+    "${cmdline[@]}" 2>&1 | tee "${temp_dir}/screenshot.log" 1>&2
+    exitcode=$?
+    if [ ${exitcode} -ne 0 ]; then
+        echo "Failed to take screenshot of ${url}" 1>&2
+        echo "Check ${temp_dir}/screenshot.log for details" 1>&2
+        return 1
+    fi
+    return 0
+}
+
+#getopt
+while getopts ":u:w:h:t:f:" opt; do
+    case $opt in
+    u) userAgent="$OPTARG" ;;
+    w) width="$OPTARG" ;;
+    h) height="$OPTARG" ;;
+    t) time_budget="$OPTARG" ;;
+    f) filename="$OPTARG" ;;
+    \?) echo "Invalid option: -$OPTARG" >&2 ;;
+    :) echo "Option -$OPTARG requires an argument." >&2 ;;
+    esac
+done
+shift $((OPTIND - 1))
+url="$1"
+if [ -z "$url" ]; then
+    echo "Usage: $0 -u <user-agent> -w <width> -h <height> -t <time-budget> -f <filename> <url>"
+    exit 1
+fi
+
+runit "$url" 2>>${HOME}/.aerthos-headless-browser.log
+if [ $? -ne 0 ]; then
+    echo "Failed to take screenshot of ${url}" 1>&2
+    exit 1
+fi
+echo "Screenshot saved to ${filename}" 1>&2

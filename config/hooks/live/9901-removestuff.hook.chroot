@@ -1,0 +1,18 @@
+#!/bin/bash
+# config/hooks/live/0001-removestuff.hook.chroot
+# this hook is called towards the end of the build process
+# part of the aerthOS project (https://aerth.github.io/aerthOS)
+set -e
+apt remove -y at-spi2-core
+rm -f /etc/xdg/autostart/at-spi-dbus-bus.desktop
+rm -f /etc/xdg/autostart/at-spi2-core.desktop /etc/xdg/autostart/xdg-user-dirs-kde.desktop /etc/xdg/autostart/light-locker.desktop
+systemctl disable \
+    avahi-daemon.service avahi-daemon.socket 
+systemctl mask \
+    avahi-daemon.service avahi-daemon.socket
+
+
+# remove accessibility settings
+
+sed -i s/QT_ACCESSIBILITY=1/QT_ACCESSIBILITY=0/g /etc/environment.d/90qt-a11y.conf
+sed -i s/QT_ACCESSIBILITY=1/QT_ACCESSIBILITY=0/g /etc/X11/Xsession.d/90qt-a11y

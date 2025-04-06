@@ -1,0 +1,7 @@
+[Desktop Entry]
+Encoding=UTF-8
+Version=0.9.4
+Name=aerthos-xstartup
+Exec=bash ~/.makeskel.bash 2
+StartupNotify=false
+Hidden=false

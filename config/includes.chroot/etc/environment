@@ -1,0 +1,4 @@
+# aerthos
+export QT_ACCESSIBILITY=0
+export NO_AT_BRIDGE=1
+# end aerthos block

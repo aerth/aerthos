@@ -1,0 +1,164 @@
+#!/bin/bash
+# start_ephemeral - start a temporary shell in a container
+# Copyright (c) 2025 aerth
+# License: MIT
+# part of the aerthOS project (https://aerth.github.io/aerthOS)
+
+# A bit like plain 'docker run' but with a few extra features that make it (even) more convenient.
+
+# Example:
+#
+# xfconf-query -c xfce4-keyboard-shortcuts -p '/commands/custom/<Super>d' -s 'start_ephemeral xfce4' --create -t string
+#
+# open new xfce4-terminal window
+# start_ephemeral xfce4  (same as)
+# start_ephemeral xfce4-terminal
+
+# Shell usage:
+# start_ephemeral shell (alias for 'bash', does not open a terminal window)
+# start_ephemeral whoami (runs command)
+# start_ephemeral bash (runs command)
+#
+#
+# Options:
+# --install
+#   Install a desktop file to ~/.local/share/applications/ephemeral-shell.desktop
+#   and symlink to ~/Desktop/ephemeral-shell.desktop
+
+# -v and -p are passed to 'docker run'
+#
+# Example:
+# start_ephemeral -v .:/wow
+# start_ephemeral -p 8080:80
+# start_ephemeral -v .:/wow -p 8080:80
+# foo=$(start_ephemeral -v.:/wow bash ./wow.sh); echo "foo is $foo"
+#
+# assuming you are in a directory with an executable 'wow.bash' script **with a shebang line**
+# start_ephemeral -v.:/wow /wow/wow.bash
+
+install_desktop(){
+	desktopfile=$(mktemp)
+	cat >$desktopfile <<EOF
+[Desktop Entry]
+Name=Ephemeral Shell
+Comment=Start an ephemeral shell
+Exec=start_ephemeral xfce4-terminal
+Icon=utilities-terminal
+Terminal=false
+Type=Application
+Categories=System;Utility;
+EOF
+	desktopfiledir="$HOME/.local/share/applications"
+	if [ ! -d "$desktopfiledir" ]; then
+		mkdir -p "$desktopfiledir"
+	fi
+	mv -v $desktopfile "$desktopfiledir/ephemeral-shell.desktop"
+	ln -s "$desktopfiledir/ephemeral-shell.desktop" "$HOME/Desktop/ephemeral-shell.desktop"
+	echo "Installed to $desktopfiledir/ephemeral-shell.desktop"
+}
+if [ $1 == "--install" ]; then
+	install_desktop
+	exit 0
+fi
+
+EPHEMERAL_IMAGE=debian:trixie-slim
+# set a random uuid for this container name, something like abc123 zyx987
+MYNAME="TMP_$(uuidgen | tr '[:lower:]' '[:upper:]' | sed 's/-.*//g')" # abc123
+if [ -z "$MYNAME" ]; then
+	echo uhoh
+	exit 3
+fi
+if [ -f /etc/default/ephemeral_shell ]; then
+	source /etc/default/ephemeral_shell
+	if [ $? -ne 0 ]; then
+		echo source failed
+		exit 3
+	fi
+fi
+if [ -n "$IMAGE" ]; then
+	EPHEMERAL_IMAGE=$IMAGE
+fi
+if [ -n "$NAME" ]; then
+	MYNAME=$NAME
+fi
+if [ -z "$EPHEMERAL_IMAGE" ]; then
+	echo "EPHEMERAL_IMAGE not set" 1>&2
+	exit 3
+fi
+
+while getopts "v:p:" opt; do
+	case $opt in
+	v)
+		EPHEMERAL_FLAGS="${EPHEMERAL_FLAGS} -v $OPTARG"
+		;;
+	p)
+		EPHEMERAL_FLAGS="${EPHEMERAL_FLAGS} -p $OPTARG"
+		;;
+	\?)
+		echo "Invalid option: -$opt" >&2
+		echo "Try putting flags AFTER the mode (xfce or shell)" >&2
+		exit 120
+		;;
+	esac
+done
+
+shift $((OPTIND - 1))
+set -e
+mode=shell
+if [ -z "$1" ]; then # no arguments given. guessing u want a shell
+	args=bash
+else
+	case "$1" in
+	xfce4*)
+		mode="xfce4-terminal"
+		shift
+		args="${@}"
+		;;
+	exec)
+		shift
+		mode=shell
+		args="${@}"
+		;;
+	bash)
+		mode=shell
+		shift
+		args="${@}"
+		echo "args=$@" 1>&2
+		;;
+	shell)
+		shift
+		if [ ${#} -ne 0 ]; then
+			echo "you meant exec" 1>&2
+			exit 3
+		fi
+		args=bash
+		;;
+	*)
+		mode=shell
+		args="${@}"
+		;;
+	esac
+fi
+set +e
+
+if [ -z "$args" ]; then
+	args="bash"
+fi
+
+the_line="echo '✨ Ephemeral shell ${MYNAME} running '$EPHEMERAL_IMAGE 1>&2; (docker ps 1>/dev/null || (echo 'Starting docker...'; docker desktop start) 1>&2 | grep -v is\ already\ running); docker run --rm -it --hostname ${MYNAME} --name ${MYNAME} -l ${MYNAME} ${EPHEMERAL_FLAGS} ${EPHEMERAL_IMAGE} ${args-bash} || read -p '👉 ephemeral shell has quit - Waiting for ENTER to quit'"
+# echo the_line=$the_line 1>&2
+case $mode in
+xfce4-terminal)
+	xfce4-terminal -x bash -c "$the_line"
+	;;
+exec)
+	# TODO fix exec stuff for foo=$(start_ephemeral exec whoami)
+	;;
+shell)
+	bash -c "$the_line"
+	;;
+*)
+	echo "Unknown mode: $mode" 1>&2
+	exit 3
+	;;
+esac

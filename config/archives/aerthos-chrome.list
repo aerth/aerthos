@@ -1,0 +1,1 @@
+deb [signed-by=/usr/share/keyrings/aerthos-chrome-archive-keyring.asc] https://dl.google.com/linux/chrome/deb/ stable main

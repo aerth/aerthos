@@ -1,0 +1,18 @@
+#!/bin/bash
+set -e
+
+
+# make 'fortune' clickable
+fortunes_file=/usr/share/applications/fortune.desktop
+if [ -e ${fortunes_file} ]; then
+        exists=$(grep 'Terminal=' "${fortunes_file}" | grep -v '^#' || true)
+        if [ -n "${exists}" ]; then
+            echo "already ${exists} in fortune.desktop"
+            sed -i 's/Terminal=false/Terminal=true/g' "${fortunes_file}" || true
+        else
+            echo "adding Terminal=true to fortune.desktop"
+            echo "Terminal=true" >>"${fortunes_file}"
+        fi
+else
+    echo "no fortune.desktop file found"
+fi

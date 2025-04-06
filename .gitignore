@@ -1,0 +1,19 @@
+/.build
+# tmp files
+*.log
+/tmp
+/other
+!.gitignore
+# clean config (we copy to, and build in ./tmp/live-build)
+!/config
+config/includes.binary/usr/share/keyrings/*
+config/includes.chroot/usr/share/keyrings/*
+config/includes.binary/etc/apt/preferences.d/*
+config/includes.chroot/etc/apt/preferences.d/*
+# copies
+config/includes.binary/etc/apt/sources.list.d/*.list
+config/includes.chroot/etc/apt/sources.list.d/*.list
+config/includes.binary/lib/live/config-hooks/default/*
+music
+config/archives/*.key
+*.deb

@@ -1,0 +1,9 @@
+[Desktop Entry]
+Version=1.0
+Type=Application
+Name=aerthos-xstartup
+Exec=bash -c "sleep 4; bash ${HOME}/.makeskel.bash 2"
+Path=
+Terminal=false
+Comment=Configure theme for aerthOS live
+StartupNotify=false
