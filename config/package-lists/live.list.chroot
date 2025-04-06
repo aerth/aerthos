@@ -3,6 +3,8 @@ live-boot
 live-config
 live-config-systemd
 systemd-sysv
+# remove
+libc6-i386-
 # aerthos
 bash
 dialog
