@@ -7,16 +7,16 @@ shopt -s nullglob
 
 # password: live
 # user: builder
+
+if [ ! -e /etc/u2f_mappings ]; then
 grep ${LIVE_USER-builder} /etc/passwd || (echo "no live user yet")
 grep ${LIVE_USER-builder} /etc/passwd && (echo "${LIVE_USER-builder}:live" | chpasswd && echo "password set for ${LIVE_USER-builder}")
-
-SKELDIR=/etc/skel
+fi
 type _log 2>/dev/null || {
     _log() {
         echo "$@" 1>&2
     }
 }
-
 install_theme_xfwm_root() {
     update-alternatives --set x-terminal-emulator /usr/bin/xfce4-terminal.wrapper
     if [ -f /usr/bin/aerthos-browser ]; then
@@ -43,18 +43,5 @@ install_theme_xfwm_root() {
     fi
 }
 
-
-# /usr/share/images/desktop-base/default
-# from /aerthos/images/background.svg
-set_background_image_root() {
-    # update-alternatives --set desktop-background /usr/share/images/desktop-base/default
-    echo hi
-}
-
-doall() {
-    install_theme_xfwm_root
-    set_background_image_root
-}
-
-doall |& tee -a /var/log/aerthos-settings.log
+install_theme_xfwm_root |& tee -a /var/log/aerthos-settings.log 1>&2
 echo "Done running 0002-aerthos-settings.bash"

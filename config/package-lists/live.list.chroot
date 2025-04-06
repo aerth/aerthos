@@ -7,17 +7,6 @@ systemd-sysv
 bash
 dialog
 whiptail
-libterm-readline-gnu-perl
-libncurses-dev
-ca-certificates
-apt-transport-https
-tmux
-xfce4
-xfce4-screenshooter
-xfce4-terminal
-dunst
-adwaita-icon-theme-legacy
-pavucontrol
 vim
 htop
 ncdu
@@ -26,6 +15,11 @@ bash-completion
 curl
 wget
 ca-certificates
+libterm-readline-gnu-perl
+libncurses-dev
+ca-certificates
+apt-transport-https
+tmux
 # yubikey
 scdaemon
 keepassxc
@@ -33,8 +27,14 @@ pinentry-gtk2
 pinentry-curses
 git
 openssh-client
-
-
+pamu2fcfg
+# graphical
+xfce4
+xfce4-screenshooter
+xfce4-terminal
+dunst
+adwaita-icon-theme-legacy
+pavucontrol
 
 # gparted
 dosfstools
@@ -42,7 +42,7 @@ exfatprogs
 e2fsprogs
 ntfs-3g
 dosfstools
-reiserfsprogs
+# reiserfsprogs
 udftools
 cryptsetup
 parted
@@ -51,7 +51,7 @@ lvm2
 util-linux
 btrfs-progs
 gpart
-jfsutils
+# jfsutils
 gparted
 
 
@@ -61,17 +61,13 @@ net-tools
 iputils-ping
 
 # aerthos
-yad
 dialog
 whiptail
 rofi
 dmenu
 sqlite3
 sqlitebrowser
-python3-tk
-python3-pip
-python3-venv
-
+yad
 jq
 rsync
 glow
@@ -82,7 +78,6 @@ mousepad
 
 # hardware
 piper
-
 
 # font
 fonts-spleen
