@@ -1,0 +1,6 @@
+#!/bin/bash
+set -e
+askmsg="Do you want to install all of the browsers?"
+[ -n "$DISPLAY" ] || dialog --yesno "$askmsg" 0 0 || exit 1
+[ -z "$DISPLAY" ] || yad --title "aerthOS" --text "$askmsg" --button=Yes:0 --button=No:1 || exit 1
+apt install -y brave-browser google-chrome-stable code firefox

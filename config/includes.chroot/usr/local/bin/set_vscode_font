@@ -1,0 +1,11 @@
+#!/bin/bash
+# set_vscode_font.sh - Set the font for Visual Studio Code (does not persist across updates)
+#
+# thanks to deathknight0718 https://github.com/microsoft/vscode/issues/519#issuecomment-2724242003
+grep Spleen /usr/share/code/resources/app/out/vs/workbench/workbench.desktop.main.css 2>/dev/null 1>/dev/null
+found=$?
+if [ $found -eq 0 ]; then
+    echo "Spleen font already set in VSCode"
+    exit 0
+fi
+echo '/* Inject */ .sidebar { font-family: "Spleen 32x64" !important; }' | sudo tee -a /usr/share/code/resources/app/out/vs/workbench/workbench.desktop.main.css

@@ -1,0 +1,2 @@
+Defaults env_keep += "NO_AT_BRIDGE"
+Defaults env_keep += "QT_ACCESSIBILITY"

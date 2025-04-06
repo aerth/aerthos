@@ -1,0 +1,6 @@
+#!/bin/bash
+export QT_ACCESSIBILITY=0
+export NO_AT_BRIDGE=1
+
+xfce4-terminal -T logs --show-borders -x sudo bash -c '(journalctl -f & dmesg -w --time-format iso)' &
+xfce4-terminal -T htop --show-borders -x htop -u $USER &

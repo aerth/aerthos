@@ -1,0 +1,89 @@
+# live
+live-boot
+live-config
+live-config-systemd
+systemd-sysv
+# aerthos
+bash
+dialog
+whiptail
+libterm-readline-gnu-perl
+libncurses-dev
+ca-certificates
+apt-transport-https
+tmux
+xfce4
+xfce4-screenshooter
+xfce4-terminal
+dunst
+adwaita-icon-theme-legacy
+pavucontrol
+vim
+htop
+ncdu
+command-not-found
+bash-completion
+curl
+wget
+ca-certificates
+# yubikey
+scdaemon
+keepassxc
+pinentry-gtk2
+pinentry-curses
+git
+openssh-client
+
+
+
+# gparted
+dosfstools
+exfatprogs
+e2fsprogs
+ntfs-3g
+dosfstools
+reiserfsprogs
+udftools
+cryptsetup
+parted
+xfsprogs
+lvm2
+util-linux
+btrfs-progs
+gpart
+jfsutils
+gparted
+
+
+# network commands
+dnsutils
+net-tools
+iputils-ping
+
+# aerthos
+yad
+dialog
+whiptail
+rofi
+dmenu
+sqlite3
+sqlitebrowser
+python3-tk
+python3-pip
+python3-venv
+
+jq
+rsync
+glow
+mailutils
+mutt
+mousepad
+
+
+# hardware
+piper
+
+
+# font
+fonts-spleen
+fonts-noto-color-emoji

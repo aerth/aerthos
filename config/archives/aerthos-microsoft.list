@@ -1,0 +1,1 @@
+deb [signed-by=/usr/share/keyrings/aerthos-microsoft-archive-keyring.asc] https://packages.microsoft.com/repos/code/ stable main

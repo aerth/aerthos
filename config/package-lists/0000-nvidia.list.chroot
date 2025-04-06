@@ -1,0 +1,5 @@
+xserver-xorg-video-nvidia
+nvidia-settings
+nvidia-opencl-icd
+nvidia-kernel-common
+nvidia-kernel-dkms

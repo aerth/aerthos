@@ -1,0 +1,1 @@
+deb [signed-by=/usr/share/keyrings/aerthos-brave-browser-archive-keyring.asc] https://brave-browser-apt-release.s3.brave.com/ stable main

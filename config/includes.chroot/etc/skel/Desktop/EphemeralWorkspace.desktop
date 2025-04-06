@@ -1,0 +1,9 @@
+[Desktop Entry]
+Name=Ephemeral Shell With $HOME/src on /workspace
+Comment=Start an ephemeral shell, customize IMAGE env variable
+Exec=start_ephemeral -v${HOME}/src:/workspace xfce4-terminal
+Icon=utilities-terminal
+Terminal=false
+Type=Application
+Categories=System;Utility;
+StartupNotify=false

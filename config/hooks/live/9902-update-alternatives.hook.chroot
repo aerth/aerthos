@@ -1,0 +1,17 @@
+#!/bin/bash
+set -e
+update-alternatives --set desktop-background /usr/share/images/desktop-base/default || true
+update-alternatives --set x-terminal-emulator /usr/bin/xfce4-terminal.wrapper
+
+# aerthos-browser as x-www-browser
+update-alternatives --install /usr/bin/x-www-browser x-www-browser /usr/local/bin/my-chromium-browser.bash 500
+update-alternatives --set x-www-browser /usr/local/bin/my-chromium-browser.bash
+
+update-alternatives --install /usr/bin/gnome-www-browser gnome-www-browser /usr/local/bin/my-chromium-browser.bash 500
+update-alternatives --set gnome-www-browser /usr/local/bin/my-chromium-browser.bash
+
+
+# mimetypes=(application/pdf application/rdf+xml application/rss+xml application/xhtml+xml application/xhtml_xml application/xml image/gif image/jpeg image/png image/webp text/html text/xml x-scheme-handler/http x-scheme-handler/https)
+# for mime in "${mimetypes[@]}"; do
+
+# done

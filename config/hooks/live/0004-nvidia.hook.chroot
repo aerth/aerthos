@@ -1,0 +1,12 @@
+apt install -y --no-install-recommends nvidia-driver nvidia-settings nvidia-kernel-dkms 
+systemctl disable nvidia-persistenced.service \
+    nvidia-suspend.service \
+    nvidia-hibernate.service \
+    nvidia-resume.service
+systemctl mask nvidia-persistenced.service \
+    nvidia-suspend.service \
+    nvidia-hibernate.service \
+    nvidia-resume.service \
+
+mkdir -p /etc/modules-load.d
+echo nvidia-drm | tee /etc/modules-load.d/nvidia.conf

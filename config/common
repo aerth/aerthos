@@ -1,0 +1,162 @@
+set -a
+echo "INIT AERTHOS BUILDER: config/common (aerthos_build_args=${aerthos_build_args-NONE} PWD=$PWD)" 1>&2
+if [ -z "${DEVELOP}" ] || [ "${DEVELOP}" != "1" ]; then
+    test -d ../../.git || echo "Error 4.a: aerthos builder! Copy the config directory to ./tmp/live-build/config" 1>&2
+    test -d ../../.git || exit 4
+    test ! -d .git || echo "Error 4.b: aerthos builder! Do not run this script in the config directory" 1>&2
+    test ! -d .git || exit 4
+fi
+echo "WELCOME AERTHOS BUILDER: config/common (aerthos_build_args=${aerthos_build_args-NONE} PWD=$PWD)" 1>&2
+
+# installer is disabled below
+
+LB_DEBIAN_INSTALLER_FLAVOURS=live
+# LB_DEBIAN_INSTALLER_GIT=https://salsa.debian.org/installer-team/debian-installer.git
+LB_DEBIAN_INSTALLER_GIT=https://salsa.debian.org/installer-team/debian-installer.git
+LB_DEBIAN_INSTALLER=live
+LB_DEBIAN_INSTALLER_DISTRIBUTION=trixie
+LB_DEBIAN_INSTALLER_ARCHITECTURES=amd64
+# LB_DEBIAN_INSTALLER_GIT_DEPTH=1
+LB_DEBIAN_INSTALLER_PRESEEDFILE=preseed.cfg
+# LB_DEBIAN_INSTALLER_ARCHITECTURES=amd64
+# LB_DEBIAN_INSTALLER_DISTRIBUTION=trixie
+# LB_DEBIAN_INSTALLER_FLAVOURS=live
+# LB_DEBIAN_INSTALLER_GIT_DEPTH=1
+LB_DEBIAN_INSTALLER_GIT=https://salsa.debian.org/installer-team/debian-installer.git
+
+# LB_DEBIAN_INSTALLER=live
+LB_LINUX_FLAVOURS=amd64
+
+# export LB_APT_INDICES=false
+LB_APT_RECOMMENDS=true
+# export LB_APT_SOURCE_ARCHIVES=false
+# export LB_APT_SOURCE_ARCHIVES=false
+# export LB_CACHE_SOURCES=false
+
+# keep these
+LB_MIRROR_BINARY=https://deb.debian.org/debian
+LB_MIRROR_BINARY_SECURITY=https://security.debian.org
+LB_MIRROR_BINARY_UPDATES=https://deb.debian.org/debian
+
+#  modprobe.blacklist=nouveau
+LB_BOOTAPPEND_LIVE='boot=live components noquiet nosplash net.ifnames=0 ipv6.disable=1 persistence'
+LB_BOOTAPPEND_LIVE_FAILSAFE="${LB_BOOTAPPEND_LIVE} memtest noapic noapm nodma nomce nosmp vga=788"
+
+LB_PARENT_DISTRIBUTION=trixie
+LB_DISTRIBUTION=aerthos
+# Bug: this doesnt set, need flag?
+LB_ARCHIVE_AREAS='main contrib non-free non-free-firmware'
+LB_ARCHITECTURES=amd64
+
+LB_CACHE_INDICES=true
+LB_CACHE_PACKAGES=true
+LB_CACHE_SOURCES=true
+LB_DEBCONF_PRIORITY=critical
+LB_DEBCONF_FRONTEND=noninteractive
+LB_INTERACTIVE=false
+
+LB_HDD_LABEL=aerthOSLive
+LB_IMAGE_NAME='aerthOSLive'
+LB_IMAGE_TYPE=iso-hybrid
+LB_ISO_APPLICATION=aerthOS
+LB_ISO_LABEL='aerthOSLive'
+LB_ISO_PREPARER=aerthOS
+LB_ISO_PUBLISHER='aerthOSLiveProject'
+LB_ISO_VOLUME='aerthOS_@ISOVOLUME_TS@'
+LB_LINUX_PACKAGES='linux-image linux-headers'
+
+LB_DEBOOTSTRAP_OPTIONS="--variant=minbase --include=apt-transport-https,ca-certificates --components=main,contrib,non-free,non-free-firmware"
+# for aerthos builder *only* (set via flags)
+MIRROR_DEBIAN="https://deb.debian.org/debian"
+MIRROR_DEBIAN_SECURITY="https://security.debian.org"
+MIRROR_DEBIAN="http://localhost:3142/debian"
+MIRROR_DEBIAN_SECURITY="http://localhost:3142/debian-security"
+
+# Set mirror to fetch packages from
+LB_MIRROR_CHROOT=${MIRROR_DEBIAN}
+
+# Set security mirror to fetch packages from
+LB_MIRROR_CHROOT_SECURITY=${MIRROR_DEBIAN_SECURITY}
+LB_MIRROR_BOOTSTRAP=${MIRROR_DEBIAN}
+# # Set mirror which ends up in the image
+# LB_MIRROR_BINARY="https://deb.debian.org/debian"
+
+# # Set security mirror which ends up in the image
+# LB_MIRROR_BINARY_SECURITY="https://security.debian.org"
+
+# # Set debian-installer mirror
+LB_MIRROR_DEBIAN_INSTALLER="http://deb.debian.org/debian/"
+
+
+
+
+
+
+
+LB_SECURE_BOOT=enable
+LB_UEFI_SECURE_BOOT=enable
+LB_BOOTLOADER_BIOS=syslinux
+LB_BOOTLOADER_EFI=grub-efi
+LB_BOOTLOADER=grub-efi
+LB_BOOTLOADERS='grub-efi syslinux'
+LB_BINARY_FILESYSTEM=ext4
+LB_CHROOT_FILESYSTEM=ext4
+LB_DEBIAN_INSTALLER=live
+LB_DEBIAN_INSTALLER_FLAVOURS=live
+# LB_DEBIAN_INSTALLER_GIT=https://salsa.debian.org/installer-team/debian-installer.git
+LB_DEBIAN_INSTALLER_DISTRIBUTION=trixie
+LB_DEBIAN_INSTALLER_ARCHITECTURES=amd64
+# LB_DEBIAN_INSTALLER_GIT_DEPTH=1
+LB_DEBIAN_INSTALLER_PRESEEDFILE=preseed.cfg
+LB_DEBIAN_INSTALLER_GUI=false
+LB_DEBIAN_INSTALLER=none
+LB_SYSTEM=live
+LB_MODE=debian
+LB_DISTRIBUTION=trixie
+
+#LB_SWAP_FILE_PATH=aerthos-swap.dat
+# 2gb
+#LB_SWAP_FILE_SIZE=2048
+
+LB_VERSION=aerthos-0.1.1
+VERSION=aerthos-0.1.1
+VERSION_ID=aerthos-0.1.1
+# Select image type here with LB_IMAGE_TYPE (iso-hybrid, iso, hdd, netboot, tar)
+LB_IMAGE_TYPE=${LB_IMAGE_TYPE-"iso-hybrid"}
+
+# Fixup in case above env is broken
+case $LB_IMAGE_TYPE in
+    iso-hybrid)
+        LB_BOOTLOADER_EFI="grub-efi"
+        LB_BOOTLOADER_BIOS="syslinux"
+        LB_INITRAMFS=live-boot
+        LB_BOOTLOADERS="grub-efi syslinux"
+        ;;
+    iso)
+        LB_BOOTLOADER_EFI="grub-efi"
+        LB_BOOTLOADER_BIOS="grub-legacy"
+        LB_INITRAMFS=live-boot
+        LB_BOOTLOADERS="grub-efi"
+        ;;
+    hdd)
+        LB_BOOTLOADER_EFI="grub-efi"
+        LB_INITRAMFS=live-boot
+        LB_BOOTLOADER_BIOS="syslinux"
+        LB_BOOTLOADERS="syslinux"
+        ;;
+    tar)
+        LB_COMPRESSION="gzip"
+        # these are unused? 
+        LB_BOOTLOADER_EFI="grub-efi"
+        LB_BOOTLOADER_BIOS="grub-legacy"
+        LB_INITRAMFS=live-boot
+        LB_BOOTLOADERS="grub-efi"
+        ;;
+
+    *)
+        echo "Error: Unknown image type: $LB_IMAGE_TYPE"
+        exit 1
+        ;;
+esac
+
+set +a

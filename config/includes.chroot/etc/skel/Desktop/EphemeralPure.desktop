@@ -1,0 +1,10 @@
+[Desktop Entry]
+Name=Ephemeral Shell
+Comment=Start an ephemeral shell, customize IMAGE env variable
+Exec=start_ephemeral xfce4-terminal
+Icon=utilities-terminal
+Terminal=false
+Type=Application
+Categories=System;Utility;
+Path=
+StartupNotify=false

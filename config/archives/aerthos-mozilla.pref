@@ -1,0 +1,4 @@
+# for firefox, pin mozilla repo (not debian repo)
+Package: firefox* thunderbird* mozilla*
+Pin: origin packages.mozilla.org
+Pin-Priority: 1000
