@@ -3,6 +3,11 @@
 # Copyright (c) 2025 aerth <aerth@localhost>
 # This file is part of the aerthOS project (https://aerth.github.io/aerthOS)
 
+test ! -e ~/.config/aerthos/setup.txt || {
+    echo "Error: ~/.config/aerthos/setup.txt already exists. If you want to reconfigure, remove it." >&2
+    sleep 3
+    exit 0
+}
 _log() {
     echo "aerthos-makeskel: $@" | tee -a /tmp/aerthos-makeskel.log 1>&2
 }
@@ -121,7 +126,9 @@ themer() {
     if [ $? -ne 0 ]; then
         _log "Failed to set xfce4 dark"
     fi
+}
 
+save_home_for_skel(){
     if command -v tree >/dev/null 2>&1; then
         tree -a ${HOME}/.config ${HOME}/Desktop -L 1 >/tmp/aerthos-home-config.txt || true
         _log "Created directory listing: /tmp/aerthos-home-config.txt"
@@ -162,6 +169,17 @@ do_themer() {
     }
 }
 
-do_themer &
-xfce4-terminal -x sudo bash -c -x '/usr/local/sbin/9999-aerthos-bootpackages.bash || echo failed; sleep 60' | sudo logger -s
-cat /proc/cmdline  | grep nodot || (git clone https://gitlab.com/aerth/dot ~/.local/dot)
+grep 'color-background-vary' ~/.config/xfce4/xfconf/xfce-perchannel-xml/xfce4-terminal.xml || do_themer
+xfce4-terminal --show-borders --title "aerthos Package Installation" -x sudo bash -c -x '/usr/local/sbin/9999-aerthos-bootpackages.bash || (echo package installation failed, you can close this window; sleep 60)'
+cat /proc/cmdline | grep nodot || (git clone https://gitlab.com/aerth/dot ~/.local/dot)
+mkdir -p ~/.config/aerthos
+touch ~/.config/aerthos/setup.txt
+echo all done
+# for example, nuke home dir and run this for creating /etc/skel config
+if "$1" == "save_home" ]; then
+    save_home_for_skel
+    if [ $? -ne 0 ]; then
+        _log "Failed to save home directory"
+        exit 1
+    fi
+fi
